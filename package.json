@@ -1,6 +1,6 @@
 {
   "name": "vfile-mkdirp",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Recursively mkdir, like `mkdir -p`, for virtual files",
   "license": "MIT",
   "keywords": [
