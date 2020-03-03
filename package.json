@@ -36,14 +36,14 @@
     "mkdirp": "^0.5.0"
   },
   "devDependencies": {
-    "nyc": "^14.0.0",
+    "nyc": "^15.0.0",
     "prettier": "^1.0.0",
     "remark-cli": "^7.0.0",
     "remark-preset-wooorm": "^6.0.0",
     "tape": "^4.0.0",
     "temp-dir": "^2.0.0",
     "to-vfile": "^6.0.0",
-    "xo": "^0.25.0"
+    "xo": "^0.27.0"
   },
   "scripts": {
     "format": "remark . -qfo && prettier --write \"**/*.js\" && xo --fix",
@@ -69,7 +69,7 @@
     "prettier": true,
     "esnext": false,
     "rules": {
-      "unicorn/prefer-exponentiation-operator": "off"
+      "prefer-exponentiation-operator": "off"
     }
   },
   "remarkConfig": {
