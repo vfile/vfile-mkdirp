@@ -58,15 +58,14 @@ or rejects with an error.
 
 Promise or void.
 
-### `callback(error[, file, made])`
+### `callback(error[, file])`
 
-Callback called when directories are made.
+Callback called when done.
 
 ###### Parameters
 
 *   `error` (`Error`) — Error, when failed
 *   `file` ([`VFile`][vfile], optional) — Given file, when complete
-*   `made` (`string`, optional) — First made directory, when complete
 
 ### `mkdirp.sync(file[, mode|options])`
 
@@ -129,4 +128,4 @@ abide by its terms.
 
 [mkdirp]: https://github.com/substack/node-mkdirp
 
-[callback]: #callbackerror-file-made
+[callback]: #callbackerror-file

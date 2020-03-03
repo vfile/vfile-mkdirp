@@ -22,14 +22,13 @@ test('vfile-mkdirp', function(t) {
     st.test('defaults', function(sst) {
       var file = random()
 
-      sst.plan(4)
+      sst.plan(3)
 
-      mkdirp(file, function(err, res, made) {
+      mkdirp(file, function(err, res) {
         sst.deepEqual([err, res], [null, file], 'should work')
         var stats = stat(resolve(file.cwd, file.dirname))
         sst.ok(stats.isDirectory(), 'should create directories')
         sst.equal(stats.mode & o777, defaults & ~umask, 'default mask')
-        sst.equal(made, resolve(file.cwd, file.dirname.split(sep)[0]), 'made')
       })
     })
 

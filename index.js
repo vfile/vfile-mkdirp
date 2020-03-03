@@ -24,11 +24,11 @@ function mkdirp(file, options, callback) {
   function executor(resolve, reject) {
     oMkdirp(root, options).then(ok, reject)
 
-    function ok(made) {
+    function ok() {
       if (resolve) {
         resolve(file)
       } else {
-        callback(null, file, made)
+        callback(null, file)
       }
     }
   }
