@@ -1,6 +1,6 @@
 'use strict'
 
-var {join, resolve, sep} = require('path')
+var path = require('path')
 var fs = require('fs')
 var tmp = require('temp-dir')
 var test = require('tape')
@@ -26,7 +26,7 @@ test('vfile-mkdirp', function(t) {
 
       mkdirp(file, function(err, res) {
         sst.deepEqual([err, res], [null, file], 'should work')
-        var stats = stat(resolve(file.cwd, file.dirname))
+        var stats = stat(path.resolve(file.cwd, file.dirname))
         sst.ok(stats.isDirectory(), 'should create directories')
         sst.equal(stats.mode & o777, defaults & ~umask, 'default mask')
       })
@@ -39,7 +39,7 @@ test('vfile-mkdirp', function(t) {
 
       mkdirp(file, o755, function(err) {
         sst.ifError(err, 'should work')
-        var stats = stat(resolve(file.cwd, file.dirname))
+        var stats = stat(path.resolve(file.cwd, file.dirname))
         sst.equal(stats.mode & o777, changed, 'should support a given mask')
       })
     })
@@ -51,16 +51,16 @@ test('vfile-mkdirp', function(t) {
 
       mkdirp(file, {mode: o755}, function(err) {
         sst.ifError(err, 'should work')
-        var stats = stat(resolve(file.cwd, file.dirname))
+        var stats = stat(path.resolve(file.cwd, file.dirname))
         sst.equal(stats.mode & o777, changed, 'should support a given mask')
       })
     })
 
     st.test('errors', function(sst) {
       var file = random()
-      var path = file.dirname.split(sep)[0]
+      var fp = file.dirname.split(path.sep)[0]
 
-      vfile.writeSync({contents: 'in the way', cwd: tmp, path: path})
+      vfile.writeSync({contents: 'in the way', cwd: tmp, path: fp})
 
       sst.plan(1)
 
@@ -82,24 +82,24 @@ test('vfile-mkdirp', function(t) {
     var stats
 
     st.equal(res, file, 'should resolve to the given file')
-    stats = await statP(resolve(file.cwd, file.dirname))
+    stats = await statP(path.resolve(file.cwd, file.dirname))
     st.ok(stats.isDirectory(), 'should create directories')
     st.equal(stats.mode & o777, defaults & ~umask, 'default mask')
 
     file = random()
     await mkdirp(file, o755)
-    stats = await statP(resolve(file.cwd, file.dirname))
+    stats = await statP(path.resolve(file.cwd, file.dirname))
     st.equal(stats.mode & o777, changed, 'should support a given mask')
 
     file = random()
     await mkdirp(file, {mode: o755})
-    stats = await statP(resolve(file.cwd, file.dirname))
+    stats = await statP(path.resolve(file.cwd, file.dirname))
     st.equal(stats.mode & o777, changed, 'should support given options')
 
     file = random()
-    var path = file.dirname.split(sep)[0]
+    var fp = file.dirname.split(path.sep)[0]
 
-    await vfile.write({contents: 'in the way', cwd: tmp, path: path})
+    await vfile.write({contents: 'in the way', cwd: tmp, path: fp})
 
     try {
       await mkdirp(file)
@@ -120,22 +120,22 @@ test('vfile-mkdirp', function(t) {
     var stats
 
     st.equal(res, file, 'should resolve to the given file')
-    stats = stat(resolve(file.cwd, file.dirname))
+    stats = stat(path.resolve(file.cwd, file.dirname))
     st.ok(stats.isDirectory(), 'should create directories')
     st.equal(stats.mode & o777, defaults & ~umask, 'default mask')
 
     file = mkdirp.sync(random(), o755)
-    stats = stat(resolve(file.cwd, file.dirname))
+    stats = stat(path.resolve(file.cwd, file.dirname))
     st.equal(stats.mode & o777, changed, 'should support a given mask')
 
     file = mkdirp.sync(random(), {mode: o755})
-    stats = stat(resolve(file.cwd, file.dirname))
+    stats = stat(path.resolve(file.cwd, file.dirname))
     st.equal(stats.mode & o777, changed, 'should support given options')
 
     file = random()
-    var path = file.dirname.split(sep)[0]
+    var fp = file.dirname.split(path.sep)[0]
 
-    vfile.writeSync({contents: 'in the way', cwd: tmp, path: path})
+    vfile.writeSync({contents: 'in the way', cwd: tmp, path: fp})
 
     try {
       mkdirp.sync(file)
@@ -154,7 +154,7 @@ test('vfile-mkdirp', function(t) {
 })
 
 function random() {
-  return vfile({cwd: tmp, dirname: join(r(), r(), r()), basename: 'tmp'})
+  return vfile({cwd: tmp, dirname: path.join(r(), r(), r()), basename: 'tmp'})
 }
 
 function r() {
