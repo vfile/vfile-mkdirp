@@ -33,7 +33,7 @@
     "index.js"
   ],
   "dependencies": {
-    "mkdirp": "^0.5.0"
+    "mkdirp": "^1.0.0"
   },
   "devDependencies": {
     "nyc": "^15.0.0",

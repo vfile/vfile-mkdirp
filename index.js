@@ -22,12 +22,10 @@ function mkdirp(file, options, callback) {
   executor(null, callback)
 
   function executor(resolve, reject) {
-    oMkdirp(root, options, done)
+    oMkdirp(root, options).then(ok, reject)
 
-    function done(err, made) {
-      if (err) {
-        reject(err)
-      } else if (resolve) {
+    function ok(made) {
+      if (resolve) {
         resolve(file)
       } else {
         callback(null, file, made)
