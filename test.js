@@ -17,46 +17,46 @@ var umask = process.umask()
 var statP = fs.promises.stat
 var stat = fs.statSync
 
-test('vfile-mkdirp', function(t) {
-  t.test('mkdirp(file[, mode|options], callback)', function(st) {
-    st.test('defaults', function(sst) {
+test('vfile-mkdirp', function (t) {
+  t.test('mkdirp(file[, mode|options], callback)', function (st) {
+    st.test('defaults', function (sst) {
       var file = random()
 
       sst.plan(3)
 
-      mkdirp(file, function(err, res) {
-        sst.deepEqual([err, res], [null, file], 'should work')
+      mkdirp(file, function (err, result) {
+        sst.deepEqual([err, result], [null, file], 'should work')
         var stats = stat(path.resolve(file.cwd, file.dirname))
         sst.ok(stats.isDirectory(), 'should create directories')
         sst.equal(stats.mode & o777, defaults & ~umask, 'default mask')
       })
     })
 
-    st.test('mode', function(sst) {
+    st.test('mode', function (sst) {
       var file = random()
 
       sst.plan(2)
 
-      mkdirp(file, o755, function(err) {
+      mkdirp(file, o755, function (err) {
         sst.ifError(err, 'should work')
         var stats = stat(path.resolve(file.cwd, file.dirname))
         sst.equal(stats.mode & o777, changed, 'should support a given mask')
       })
     })
 
-    st.test('options', function(sst) {
+    st.test('options', function (sst) {
       var file = random()
 
       sst.plan(2)
 
-      mkdirp(file, {mode: o755}, function(err) {
+      mkdirp(file, {mode: o755}, function (err) {
         sst.ifError(err, 'should work')
         var stats = stat(path.resolve(file.cwd, file.dirname))
         sst.equal(stats.mode & o777, changed, 'should support a given mask')
       })
     })
 
-    st.test('errors', function(sst) {
+    st.test('errors', function (sst) {
       var file = random()
       var fp = file.dirname.split(path.sep)[0]
 
@@ -64,7 +64,7 @@ test('vfile-mkdirp', function(t) {
 
       sst.plan(1)
 
-      mkdirp(file, function(error) {
+      mkdirp(file, function (error) {
         sst.ok(
           // Unix / Windows
           error.code === 'ENOTDIR' || error.code === 'EEXIST',
@@ -76,12 +76,12 @@ test('vfile-mkdirp', function(t) {
     st.end()
   })
 
-  t.test('mkdirp(file[, mode|options])', async function(st) {
+  t.test('mkdirp(file[, mode|options])', async function (st) {
     var file = random()
-    var res = await mkdirp(file)
+    var result = await mkdirp(file)
     var stats
 
-    st.equal(res, file, 'should resolve to the given file')
+    st.equal(result, file, 'should resolve to the given file')
     stats = await statP(path.resolve(file.cwd, file.dirname))
     st.ok(stats.isDirectory(), 'should create directories')
     st.equal(stats.mode & o777, defaults & ~umask, 'default mask')
@@ -114,12 +114,12 @@ test('vfile-mkdirp', function(t) {
     st.end()
   })
 
-  t.test('mkdirp.sync(file[, mode|options])', function(st) {
+  t.test('mkdirp.sync(file[, mode|options])', function (st) {
     var file = random()
-    var res = mkdirp.sync(file)
+    var result = mkdirp.sync(file)
     var stats
 
-    st.equal(res, file, 'should resolve to the given file')
+    st.equal(result, file, 'should resolve to the given file')
     stats = stat(path.resolve(file.cwd, file.dirname))
     st.ok(stats.isDirectory(), 'should create directories')
     st.equal(stats.mode & o777, defaults & ~umask, 'default mask')
