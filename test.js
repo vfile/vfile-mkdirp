@@ -58,13 +58,14 @@ test('vfile-mkdirp', function (t) {
       var file = random()
       var fp = file.dirname.split(path.sep)[0]
 
-      vfile.writeSync({contents: 'in the way', cwd: tmp, path: fp})
+      vfile.writeSync({value: 'in the way', cwd: tmp, path: fp})
 
       sst.plan(1)
 
       mkdirp(file, function (error) {
         sst.ok(
           // Unix / Windows
+          // @ts-ignore Sure `code` exists.
           error.code === 'ENOTDIR' || error.code === 'EEXIST',
           'should pass errors'
         )
@@ -77,6 +78,7 @@ test('vfile-mkdirp', function (t) {
   t.test('mkdirp(file[, mode|options])', async function (st) {
     var file = random()
     var result = await mkdirp(file)
+    /** @type {fs.Stats} */
     var stats
 
     st.equal(result, file, 'should resolve to the given file')
@@ -97,7 +99,7 @@ test('vfile-mkdirp', function (t) {
     file = random()
     var fp = file.dirname.split(path.sep)[0]
 
-    await vfile.write({contents: 'in the way', cwd: tmp, path: fp})
+    await vfile.write({value: 'in the way', cwd: tmp, path: fp})
 
     try {
       await mkdirp(file)
@@ -115,6 +117,7 @@ test('vfile-mkdirp', function (t) {
   t.test('mkdirpSync(file[, mode|options])', function (st) {
     var file = random()
     var result = mkdirpSync(file)
+    /** @type {fs.Stats} */
     var stats
 
     st.equal(result, file, 'should resolve to the given file')
@@ -133,7 +136,7 @@ test('vfile-mkdirp', function (t) {
     file = random()
     var fp = file.dirname.split(path.sep)[0]
 
-    vfile.writeSync({contents: 'in the way', cwd: tmp, path: fp})
+    vfile.writeSync({value: 'in the way', cwd: tmp, path: fp})
 
     try {
       mkdirpSync(file)
