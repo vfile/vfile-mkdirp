@@ -24,8 +24,8 @@ test('vfile-mkdirp', function (t) {
 
       sst.plan(3)
 
-      mkdirp(file, function (err, result) {
-        sst.deepEqual([err, result], [null, file], 'should work')
+      mkdirp(file, function (error, result) {
+        sst.deepEqual([error, result], [null, file], 'should work')
         var stats = stat(path.resolve(file.cwd, file.dirname))
         sst.ok(stats.isDirectory(), 'should create directories')
         sst.equal(stats.mode & o777, defaults & ~umask, 'default mask')
@@ -37,8 +37,8 @@ test('vfile-mkdirp', function (t) {
 
       sst.plan(2)
 
-      mkdirp(file, o755, function (err) {
-        sst.ifError(err, 'should work')
+      mkdirp(file, o755, function (error) {
+        sst.ifError(error, 'should work')
         var stats = stat(path.resolve(file.cwd, file.dirname))
         sst.equal(stats.mode & o777, changed, 'should support a given mask')
       })
@@ -49,8 +49,8 @@ test('vfile-mkdirp', function (t) {
 
       sst.plan(2)
 
-      mkdirp(file, {mode: o755}, function (err) {
-        sst.ifError(err, 'should work')
+      mkdirp(file, {mode: o755}, function (error) {
+        sst.ifError(error, 'should work')
         var stats = stat(path.resolve(file.cwd, file.dirname))
         sst.equal(stats.mode & o777, changed, 'should support a given mask')
       })
