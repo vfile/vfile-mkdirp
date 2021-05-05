@@ -1,13 +1,7 @@
-'use strict'
+import path from 'path'
+import oMkdirp from 'mkdirp'
 
-var resolve = require('path').resolve
-var oMkdirp = require('mkdirp')
-
-module.exports = mkdirp
-
-mkdirp.sync = sync
-
-function mkdirp(file, options, callback) {
+export function mkdirp(file, options, callback) {
   var root = base(file)
 
   if (!callback && typeof options === 'function') {
@@ -34,11 +28,11 @@ function mkdirp(file, options, callback) {
   }
 }
 
-function sync(file, options) {
+export function mkdirpSync(file, options) {
   oMkdirp.sync(base(file), options)
   return file
 }
 
 function base(file) {
-  return resolve(file.cwd, file.dirname)
+  return path.resolve(file.cwd, file.dirname)
 }

@@ -1,15 +1,13 @@
-'use strict'
+import path from 'path'
+import fs from 'fs'
+import tmp from 'temp-dir'
+import test from 'tape'
+import {toVFile as vfile} from 'to-vfile'
+import {mkdirp, mkdirpSync} from './index.js'
 
-var path = require('path')
-var fs = require('fs')
-var tmp = require('temp-dir')
-var test = require('tape')
-var vfile = require('to-vfile')
-var mkdirp = require('.')
-
-var o777 = parseInt('0777', 8)
-var o755 = parseInt('0755', 8)
-var o666 = parseInt('0666', 8)
+var o777 = 0o0777
+var o755 = 0o0755
+var o666 = 0o0666
 var defaults = global.process.platform === 'win32' ? o666 : o777
 var changed = global.process.platform === 'win32' ? o666 : o755
 var umask = process.umask()
@@ -114,9 +112,9 @@ test('vfile-mkdirp', function (t) {
     st.end()
   })
 
-  t.test('mkdirp.sync(file[, mode|options])', function (st) {
+  t.test('mkdirpSync(file[, mode|options])', function (st) {
     var file = random()
-    var result = mkdirp.sync(file)
+    var result = mkdirpSync(file)
     var stats
 
     st.equal(result, file, 'should resolve to the given file')
@@ -124,11 +122,11 @@ test('vfile-mkdirp', function (t) {
     st.ok(stats.isDirectory(), 'should create directories')
     st.equal(stats.mode & o777, defaults & ~umask, 'default mask')
 
-    file = mkdirp.sync(random(), o755)
+    file = mkdirpSync(random(), o755)
     stats = stat(path.resolve(file.cwd, file.dirname))
     st.equal(stats.mode & o777, changed, 'should support a given mask')
 
-    file = mkdirp.sync(random(), {mode: o755})
+    file = mkdirpSync(random(), {mode: o755})
     stats = stat(path.resolve(file.cwd, file.dirname))
     st.equal(stats.mode & o777, changed, 'should support given options')
 
@@ -138,7 +136,7 @@ test('vfile-mkdirp', function (t) {
     vfile.writeSync({contents: 'in the way', cwd: tmp, path: fp})
 
     try {
-      mkdirp.sync(file)
+      mkdirpSync(file)
     } catch (error) {
       st.ok(
         // Unix / Windows
@@ -158,5 +156,5 @@ function random() {
 }
 
 function r() {
-  return Math.floor(Math.random() * Math.pow(16, 4)).toString(16)
+  return Math.floor(Math.random() * 16 ** 4).toString(16)
 }

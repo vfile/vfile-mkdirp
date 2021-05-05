@@ -11,6 +11,9 @@ Make sure the directory to a [`vfile`][vfile] exists.
 
 ## Install
 
+This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c):
+Node 12+ is needed to use it and it must be `import`ed instead of `require`d.
+
 [npm][]:
 
 ```sh
@@ -20,8 +23,8 @@ npm install vfile-mkdirp
 ## Use
 
 ```js
-var vfile = require('to-vfile')
-var mkdirp = require('vfile-mkdirp')
+import {toVFile as vfile} from 'to-vfile'
+import {mkdirp} from 'vfile-mkdirp'
 
 var file = vfile('a/deep/path/to/docs/readme.md')
 
@@ -38,6 +41,9 @@ await vfile.write(file)
 ```
 
 ## API
+
+This package exports the following identifiers: `mkdirp`, `mkdirpSync`.
+There is no default export.
 
 ### `mkdirp(file[, mode|options][, callback])`
 
@@ -67,7 +73,7 @@ Callback called when done.
 *   `error` (`Error`) — Error, when failed
 *   `file` ([`VFile`][vfile], optional) — Given file, when complete
 
-### `mkdirp.sync(file[, mode|options])`
+### `mkdirpSync(file[, mode|options])`
 
 Like `mkdirp(file[, mode|options])` but synchronous.
 Either throws an error or returns the given file.
