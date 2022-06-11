@@ -6,58 +6,58 @@ import test from 'tape'
 import {toVFile as vfile} from 'to-vfile'
 import {mkdirp, mkdirpSync} from './index.js'
 
-var o777 = 0o0777
-var o755 = 0o0755
-var o666 = 0o0666
-var defaults = process.platform === 'win32' ? o666 : o777
-var changed = process.platform === 'win32' ? o666 : o755
-var umask = process.umask()
+const o777 = 0o0777
+const o755 = 0o0755
+const o666 = 0o0666
+const defaults = process.platform === 'win32' ? o666 : o777
+const changed = process.platform === 'win32' ? o666 : o755
+const umask = process.umask()
 
-var statP = fs.promises.stat
-var stat = fs.statSync
+const statP = fs.promises.stat
+const stat = fs.statSync
 
 test('vfile-mkdirp', function (t) {
   t.test('mkdirp(file[, mode|options], callback)', function (st) {
     st.test('defaults', function (sst) {
-      var file = random()
+      const file = random()
 
       sst.plan(3)
 
       mkdirp(file, function (error, result) {
         sst.deepEqual([error, result], [null, file], 'should work')
-        var stats = stat(path.resolve(file.cwd, file.dirname))
+        const stats = stat(path.resolve(file.cwd, file.dirname))
         sst.ok(stats.isDirectory(), 'should create directories')
         sst.equal(stats.mode & o777, defaults & ~umask, 'default mask')
       })
     })
 
     st.test('mode', function (sst) {
-      var file = random()
+      const file = random()
 
       sst.plan(2)
 
       mkdirp(file, o755, function (error) {
         sst.ifError(error, 'should work')
-        var stats = stat(path.resolve(file.cwd, file.dirname))
+        const stats = stat(path.resolve(file.cwd, file.dirname))
         sst.equal(stats.mode & o777, changed, 'should support a given mask')
       })
     })
 
     st.test('options', function (sst) {
-      var file = random()
+      const file = random()
 
       sst.plan(2)
 
       mkdirp(file, {mode: o755}, function (error) {
         sst.ifError(error, 'should work')
-        var stats = stat(path.resolve(file.cwd, file.dirname))
+        const stats = stat(path.resolve(file.cwd, file.dirname))
         sst.equal(stats.mode & o777, changed, 'should support a given mask')
       })
     })
 
     st.test('errors', function (sst) {
-      var file = random()
-      var fp = file.dirname.split(path.sep)[0]
+      const file = random()
+      const fp = file.dirname.split(path.sep)[0]
 
       vfile.writeSync({value: 'in the way', cwd: tmp, path: fp})
 
@@ -77,13 +77,11 @@ test('vfile-mkdirp', function (t) {
   })
 
   t.test('mkdirp(file[, mode|options])', async function (st) {
-    var file = random()
-    var result = await mkdirp(file)
-    /** @type {fs.Stats} */
-    var stats
+    let file = random()
+    const result = await mkdirp(file)
 
     st.equal(result, file, 'should resolve to the given file')
-    stats = await statP(path.resolve(file.cwd, file.dirname))
+    let stats = await statP(path.resolve(file.cwd, file.dirname))
     st.ok(stats.isDirectory(), 'should create directories')
     st.equal(stats.mode & o777, defaults & ~umask, 'default mask')
 
@@ -98,7 +96,7 @@ test('vfile-mkdirp', function (t) {
     st.equal(stats.mode & o777, changed, 'should support given options')
 
     file = random()
-    var fp = file.dirname.split(path.sep)[0]
+    const fp = file.dirname.split(path.sep)[0]
 
     await vfile.write({value: 'in the way', cwd: tmp, path: fp})
 
@@ -116,13 +114,11 @@ test('vfile-mkdirp', function (t) {
   })
 
   t.test('mkdirpSync(file[, mode|options])', function (st) {
-    var file = random()
-    var result = mkdirpSync(file)
-    /** @type {fs.Stats} */
-    var stats
+    let file = random()
+    const result = mkdirpSync(file)
 
     st.equal(result, file, 'should resolve to the given file')
-    stats = stat(path.resolve(file.cwd, file.dirname))
+    let stats = stat(path.resolve(file.cwd, file.dirname))
     st.ok(stats.isDirectory(), 'should create directories')
     st.equal(stats.mode & o777, defaults & ~umask, 'default mask')
 
@@ -135,7 +131,7 @@ test('vfile-mkdirp', function (t) {
     st.equal(stats.mode & o777, changed, 'should support given options')
 
     file = random()
-    var fp = file.dirname.split(path.sep)[0]
+    const fp = file.dirname.split(path.sep)[0]
 
     vfile.writeSync({value: 'in the way', cwd: tmp, path: fp})
 

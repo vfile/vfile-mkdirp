@@ -17,9 +17,9 @@ import oMkdirp from 'mkdirp'
 export const mkdirp =
   /**
    * @type {{
-   *   <F = VFile>(file: F, options: Options, callback: Callback<F>): void
-   *   <F = VFile>(file: F, callback: Callback<F>): void
-   *   <F = VFile>(file: F, options?: Options): Promise<F>
+   *   <File = VFile>(file: File, options: Options, callback: Callback<File>): void
+   *   <File = VFile>(file: File, callback: Callback<File>): void
+   *   <File = VFile>(file: File, options?: Options): Promise<File>
    * }}
    */
   (
@@ -28,10 +28,10 @@ export const mkdirp =
      * @param {LocalFile} file
      * @param {Options} [options]
      * @param {Callback<LocalFile>} [callback]
-     * @returns {Promise.<LocalFile>?}
+     * @returns {Promise<LocalFile>?}
      */
     function (file, options, callback) {
-      var root = base(file)
+      const root = base(file)
 
       if (!callback && typeof options === 'function') {
         callback = options
@@ -64,10 +64,10 @@ export const mkdirp =
   )
 
 /**
- * @template {VFile} F
- * @param {F} file
+ * @template {VFile} File
+ * @param {File} file
  * @param {OptionsSync} [options]
- * @returns {F}
+ * @returns {File}
  */
 export function mkdirpSync(file, options) {
   oMkdirp.sync(base(file), options)
