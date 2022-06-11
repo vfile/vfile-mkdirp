@@ -11,7 +11,7 @@
  * @param {CallbackFile} file
  */
 
-import path from 'path'
+import path from 'node:path'
 import oMkdirp from 'mkdirp'
 
 export const mkdirp =

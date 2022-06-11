@@ -1,5 +1,6 @@
-import path from 'path'
-import fs from 'fs'
+import process from 'node:process'
+import path from 'node:path'
+import fs from 'node:fs'
 import tmp from 'temp-dir'
 import test from 'tape'
 import {toVFile as vfile} from 'to-vfile'
@@ -8,8 +9,8 @@ import {mkdirp, mkdirpSync} from './index.js'
 var o777 = 0o0777
 var o755 = 0o0755
 var o666 = 0o0666
-var defaults = global.process.platform === 'win32' ? o666 : o777
-var changed = global.process.platform === 'win32' ? o666 : o755
+var defaults = process.platform === 'win32' ? o666 : o777
+var changed = process.platform === 'win32' ? o666 : o755
 var umask = process.umask()
 
 var statP = fs.promises.stat
